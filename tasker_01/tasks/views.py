@@ -11,12 +11,10 @@ def index(request: HttpRequest) -> HttpResponse:
     }
     return render(request, 'tasks/index.html', context)
 
-
 def task_list(request: HttpRequest) -> HttpResponse:
     return render(request, 'tasks/task_list.html', {
         'task_list': models.Task.objects.all()
     })
-
 
 def task_detail(request: HttpRequest, pk:int) -> HttpResponse:
     return render(request, 'tasks/task_detail.html', {
@@ -28,4 +26,6 @@ def task_done(request: HttpRequest, pk:int) -> HttpResponse:
     task.is_done = not task.is_done
     task.save()
     messages.success(request, f"Task #{task.pk} marked as {'done' if task.is_done else 'undone'}.")
+    if request.GET.get('next'):
+        return redirect(request.GET.get('next'))
     return redirect(task_list)
