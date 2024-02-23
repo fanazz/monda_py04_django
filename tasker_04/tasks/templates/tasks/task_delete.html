@@ -4,7 +4,6 @@
 <h1>{% trans "deleting task"|capfirst %} {{ task.name }}</h1>
 <form method="post" action="{{ request.path }}">
     {% csrf_token %}
-    {{ form.as_p }}
     <p>
         {% trans "are you sure you want to delete task" %}
         {{ task.name }}? 
