@@ -45,7 +45,7 @@ class Ticket(models.Model):
         return _("{} from {} sent {}").format(
             self.subject,
             self.sender_email,
-            self.sent_at,
+            str(self.sent_at)[:19],
         )
 
     def clean(self) -> None:
@@ -58,7 +58,7 @@ class Ticket(models.Model):
 
 
 class TicketMessage(models.Model):
-    ticket = models.ForeignKey(Ticket, verbose_name=_("ticket"), on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, verbose_name=_("ticket"), on_delete=models.CASCADE, related_name="messages")
     body = models.TextField(_("body"), max_length=10000, default='', blank=True)
     sender = models.ForeignKey(
         get_user_model(), 
